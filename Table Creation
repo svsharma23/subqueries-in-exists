@@ -1,0 +1,43 @@
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    age INT,
+    signup_date DATE,
+    status VARCHAR(20)
+);
+
+INSERT INTO users (id, name, city, age, signup_date, status) VALUES
+(1, 'Alice', 'Delhi', 28, '2022-01-15', 'Active'),
+(2, 'Bob', 'Mumbai', 35, '2021-03-10', 'Active'),
+(3, 'Charlie', 'Delhi', 40, '2020-07-01', 'Inactive'),
+(4, 'David', 'Bangalore', 30, '2023-02-18', 'Active'),
+(5, 'Eva', 'Chennai', 25, '2022-05-20', 'Active'),
+(6, 'Frank', 'Mumbai', 32, '2023-08-01', 'Active'),
+(7, 'Grace', 'Delhi', 29, '2022-11-23', 'Inactive'),
+(8, 'Henry', 'Pune', 45, '2021-12-05', 'Active'),
+(9, 'Ivy', 'Chennai', 27, '2022-09-12', 'Active'),
+(10, 'John', 'Delhi', 31, '2024-01-10', 'Active');
+
+CREATE TABLE user_orders (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    amount INT,
+    status VARCHAR(20)
+);
+
+INSERT INTO user_orders (id, customer_id, order_date, amount, status) VALUES
+(101, 1, '2023-01-10', 1500, 'Delivered'),
+(102, 2, '2023-02-15', 1200, 'Cancelled'),
+(103, 1, '2023-03-12', 1800, 'Delivered'),
+(104, 3, '2022-04-05', 1600, 'Cancelled'),
+(105, NULL, '2023-06-09', 2000, 'Cancelled'),
+(106, 4, '2023-07-01', 1700, 'Delivered'),
+(107, 5, '2023-08-20', 1100, 'Delivered'),
+(108, 5, '2023-09-22', 900, 'Cancelled'),
+(109, 7, '2023-10-30', 1400, 'Cancelled'),
+(110, 8, '2023-11-11', 2200, 'Delivered'),
+(111, 2, '2024-01-15', 1300, 'Delivered'),
+(112, 6, '2024-03-05', 1250, 'Cancelled');
+
