@@ -1,0 +1,25 @@
+🧠 What I Learned — IN / NOT IN / EXISTS / NOT EXISTS Subquery Practice
+🔹 1. IN vs EXISTS
+IN is best when the subquery returns a list of values (non-correlated)
+
+EXISTS is preferred when checking row-by-row existence (correlated)
+
+Both can solve similar problems, but EXISTS performs better with large datasets
+
+🔹 2. NOT IN vs NOT EXISTS
+NOT IN can fail silently if subquery contains NULL
+
+✅ Fixed it using WHERE column IS NOT NULL inside subquery
+
+NOT EXISTS is NULL-safe and more reliable in such cases
+
+
+🔹 3. Subquery Design Patterns Learned:
+Use IN (...) when the subquery is independent
+
+Use EXISTS (...) when inner query depends on outer row
+
+Grouped filtering with HAVING for non-correlated logic
+
+Split logic across multiple subqueries to isolate status filters
+
