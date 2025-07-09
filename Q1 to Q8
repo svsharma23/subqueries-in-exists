@@ -1,0 +1,127 @@
+-- 🔹 Q1. List all users who have placed at least one order
+-- → Do with both IN and EXISTS
+-- using IN
+SELECT name FROM users
+WHERE id IN(
+SELECT customer_id FROM user_orders
+WHERE customer_id IS NOT NULL
+);
+-- using EXISTS
+SELECT u.name from users u
+WHERE EXISTS
+(SELECT uo.customer_id FROM user_orders uo
+WHERE u.id = uo.customer_id );
+
+-- 🔹 Q2: Customers who never placed an order
+-- → Use NOT IN and NOT EXISTS (watch out for that NULL!)
+-- using NOT IN
+SELECT name FROM users
+WHERE id NOT IN (
+SELECT customer_id FROM user_orders
+WHERE customer_id IS NOT NULL
+);
+-- using NOT exists
+SELECT u.name FROM users u
+WHERE NOT EXISTS(
+SELECT uo.customer_id FROM user_orders uo
+WHERE u.id = uo.customer_id
+);
+
+-- Q3: Users who have placed only cancelled orders
+-- Using IN
+SELECT id, name FROM users
+WHERE id IN(
+SELECT customer_id FROM user_orders
+WHERE status = 'Cancelled')
+AND
+id NOT IN(
+SELECT customer_id FROM user_orders
+WHERE status = 'Delivered');
+-- using EXISTS
+SELECT u.id, u.name FROM users u
+WHERE EXISTS (
+SELECT * FROM user_orders uo
+WHERE u.id=uo.customer_id AND uo.status = 'Cancelled')
+AND NOT EXISTS
+(SELECT * FROM user_orders uo
+WHERE u.id=uo.customer_id AND uo.status = 'Delivered'
+);
+
+-- 🔹 Q4: List users who have never placed a Delivered order
+-- using IN
+SELECT id, name FROM users
+WHERE id IN(
+SELECT customer_id FROM user_orders)
+AND id NOT IN(
+SELECT customer_id FROM user_orders
+WHERE status = 'Delivered'
+);
+-- using EXIST
+SELECT u.id, u.name FROM users u
+WHERE EXISTS(
+SELECT* FROM user_orders uo
+WHERE u.id=uo.customer_id)
+AND NOT EXISTS(
+SELECT * FROM user_orders uo
+WHERE u.id=uo.customer_id AND uo.status = 'Delivered');
+
+-- 🧠 Q5: Users who have placed at least one delivered order
+-- using IN
+SELECT id, name FROM users
+WHERE id IN
+(SELECT customer_id FROM user_orders
+WHERE status = 'Delivered');
+--using EXISTS
+SELECT u.id, u.name FROM users u
+WHERE EXISTS
+(SELECT 1 FROM user_orders uo
+WHERE u.id = uo.customer_id AND uo.status = 'Delivered');
+
+-- Q6: Users who have placed both Delivered and Cancelled orders
+-- using IN
+SELECT id, name FROM users
+WHERE id IN(
+SELECT customer_id FROM user_orders
+WHERE status = 'Delivered') AND
+id IN (SELECT customer_id FROM user_orders
+WHERE status = 'Cancelled');
+--using EXISTS
+SELECT u.id, u.name FROM users u
+WHERE EXISTS
+(SELECT 1 FROM user_orders o
+WHERE u.id = o.customer_id AND o.status = 'Delivered')
+AND EXISTS
+(SELECT 1 FROM user_orders o
+WHERE u.id = o.customer_id AND o.status = 'Cancelled');
+
+-- 🔸 Q7. List users who have never placed any orders
+--using IN
+SELECT id, name FROM users
+WHERE id NOT IN(
+SELECT customer_id FROM user_orders
+WHERE customer_id IS NOT NULL);
+--using EXISTS
+SELECT u.id, u.name FROM users u
+WHERE NOT EXISTS(
+SELECT 1 FROM user_orders o
+WHERE u.id = o.customer_id);
+
+-- Q8: List users who have placed at least one order — but never placed a Cancelled order
+--using IN
+SELECT id, name FROM users
+WHERE id IN (
+  SELECT customer_id FROM user_orders
+  WHERE customer_id IS NOT NULL
+)
+AND id NOT IN (
+  SELECT customer_id FROM user_orders
+  WHERE status = 'Cancelled' AND customer_id IS NOT NULL
+);
+-- using EXISTS
+SELECT u.id, u.name FROM users u
+WHERE EXISTS
+(SELECT 1 FROM user_orders o
+WHERE u.id = o.customer_id)
+AND NOT EXISTS
+(SELECT 1 FROM user_orders o
+WHERE u.id = o.customer_id AND o.status = 'Cancelled');
